@@ -1,10 +1,12 @@
+package HaroldHC;
+
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        // è¯»é…ç½®
+        // ¶ÁÅäÖÃ
         String option_dir = "rpf_opt.txt";
         Path path = Paths.get(option_dir);
         List<String> text = null;
@@ -30,22 +32,22 @@ public class Main {
         System.out.println(item_name);
         System.out.println(item_count);
 
-        long seed_thread = (seeds_num / thread_num);  // æ¯ä¸ªçº¿ç¨‹ç­›å‡ ä¸ªç§å­
+        long seed_thread = (seeds_num / thread_num);  // Ã¿¸öÏß³ÌÉ¸¼¸¸öÖÖ×Ó
 
-        // å¾ªç¯å˜é‡
+        // Ñ­»·±äÁ¿
         int thread_now = 1;
         long seed_start_now = seed_start;
         long seed_end_now;
-        // å¤šå¼€
+        // ¶à¿ª
         while (thread_now <= thread_num) {
-            seed_end_now = seed_start_now + seed_thread;  // æ”¹å˜å¾ªç¯å˜é‡
+            seed_end_now = seed_start_now + seed_thread;  // ¸Ä±äÑ­»·±äÁ¿
 
-            // å¼€å§‹
+            // ¿ªÊ¼
             rp_filter runner = new rp_filter(seed_start_now, seed_end_now, item_name, item_count, String.valueOf(thread_now)
                     , save_dir, save_name);
             runner.start();
 
-            // æ”¹å˜å¾ªç¯å˜é‡
+            // ¸Ä±äÑ­»·±äÁ¿
             seed_start_now += seed_thread;
             thread_now++;
         }
