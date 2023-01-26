@@ -1,4 +1,4 @@
-package HaroldHC;
+package HaroldHC.rp_chest_filter;
 
 import java.io.IOException;
 import java.nio.file.*;

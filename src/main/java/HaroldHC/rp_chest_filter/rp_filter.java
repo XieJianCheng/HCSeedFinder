@@ -1,17 +1,16 @@
-package HaroldHC;
+package HaroldHC.rp_chest_filter;
 
-import kaptainwutax.mcutils.util.math.DistanceMetric;
-import kaptainwutax.mcutils.util.pos.BPos;
-import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.mcutils.state.Dimension;
-import kaptainwutax.mcutils.rand.ChunkRand;
-import kaptainwutax.mcutils.util.pos.CPos;
 
-import kaptainwutax.featureutils.structure.RuinedPortal;
-
-import kaptainwutax.featureutils.loot.LootContext;
-import kaptainwutax.featureutils.loot.MCLootTables;
-import kaptainwutax.featureutils.loot.item.ItemStack;
+import com.seedfinding.mccore.rand.ChunkRand;
+import com.seedfinding.mccore.state.Dimension;
+import com.seedfinding.mccore.util.math.DistanceMetric;
+import com.seedfinding.mccore.util.pos.BPos;
+import com.seedfinding.mccore.util.pos.CPos;
+import com.seedfinding.mccore.version.MCVersion;
+import com.seedfinding.mcfeature.loot.LootContext;
+import com.seedfinding.mcfeature.loot.MCLootTables;
+import com.seedfinding.mcfeature.loot.item.ItemStack;
+import com.seedfinding.mcfeature.structure.RuinedPortal;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -23,7 +22,7 @@ import java.util.List;
 public class rp_filter extends Thread{
     private Thread threading;
     ChunkRand rand = new ChunkRand();
-    boolean debugging = false;          // è°ƒè¯•è®¾ç½®
+    boolean debugging = false;          // µ÷ÊÔÉèÖÃ
 
     long seed_start;
     long seed_end;
@@ -50,9 +49,9 @@ public class rp_filter extends Thread{
         }
     }
 
-    // ä¸»ç¨‹åº
+    // Ö÷³ÌĞò
     public void run() {
-        StringBuilder output = new StringBuilder();     // æ–‡ä»¶å†…å®¹
+        StringBuilder output = new StringBuilder();     // ÎÄ¼şÄÚÈİ
 
         long seed_now = seed_start;
         long times = 0L;
@@ -60,14 +59,14 @@ public class rp_filter extends Thread{
             times ++;
             //            System.out.println("Thread_"+thread_name+": "+seed_now);
 
-            rp_filter run_test = this;   // (å®ä¾‹åŒ–)
-            CPos[] rp = run_test.get_rp_list(seed_now); // å¾—åˆ°ä¸€å †åºŸé—¨
-            CPos res = run_test.loot_chest_list(seed_now, rp, target, num);     // ç­›ç®±å­
+            rp_filter run_test = this;   // (ÊµÀı»¯)
+            CPos[] rp = run_test.get_rp_list(seed_now); // µÃµ½Ò»¶Ñ·ÏÃÅ
+            CPos res = run_test.loot_chest_list(seed_now, rp, target, num);     // É¸Ïä×Ó
 
-            boolean looted = res.getX() != Integer.MAX_VALUE && res.getZ() != Integer.MAX_VALUE;    // æ˜¯å¦ç¬¦åˆ
+            boolean looted = res.getX() != Integer.MAX_VALUE && res.getZ() != Integer.MAX_VALUE;    // ÊÇ·ñ·ûºÏ
             if(looted){
                 System.out.println(seed_now+" looted");
-                BPos rp_position = res.toBlockPos();    // åºŸé—¨ä½ç½®
+                BPos rp_position = res.toBlockPos();    // ·ÏÃÅÎ»ÖÃ
                 System.out.println(rp_position);
                 output.append(seed_now);
                 output.append(' ');
@@ -81,7 +80,7 @@ public class rp_filter extends Thread{
 
         StringBuilder file_name = new StringBuilder();
         try {
-            // ç”Ÿæˆæ–‡ä»¶åï¼Œæˆ‘è§‰å¾—å¯ä»¥ç®€æ´ä¸€ç‚¹ï¼Œä½†æ˜¯æˆ‘æ‡’ï¼ˆ
+            // Éú³ÉÎÄ¼şÃû£¬ÎÒ¾õµÃ¿ÉÒÔ¼ò½àÒ»µã£¬µ«ÊÇÎÒÀÁ£¨
             file_name.append(save_dir);
             file_name.append("\\");
             file_name.append(save_name);
@@ -96,11 +95,11 @@ public class rp_filter extends Thread{
         }
     }
 
-    // è·å–ç¦»åŸç‚¹æœ€è¿‘çš„åºŸé—¨
+    // »ñÈ¡ÀëÔ­µã×î½üµÄ·ÏÃÅ
     public CPos get_rp(long seed) {
         if(debugging){System.out.println("\ngetting ruined portal:");}
         RuinedPortal rp = new RuinedPortal(Dimension.OVERWORLD, MCVersion.v1_16_1);
-        // ç”Ÿæˆ4ä¸ªåºŸé—¨
+        // Éú³É4¸ö·ÏÃÅ
         CPos rp_1 = rp.getInRegion(seed, 0, 0, rand);
         CPos rp_2 = rp.getInRegion(seed, -1, 0, rand);
         CPos rp_3 = rp.getInRegion(seed, -1, -1, rand);
@@ -131,7 +130,7 @@ public class rp_filter extends Thread{
         return closest_rp;
     }
 
-    // åŠ è½½åŸç‚¹å‘¨å›´4ä¸ªåºŸé—¨
+    // ¼ÓÔØÔ­µãÖÜÎ§4¸ö·ÏÃÅ
     public CPos[] get_rp_list(long seed){
         if(debugging){System.out.println("\ngetting ruined portal:");}
         RuinedPortal rp = new RuinedPortal(Dimension.OVERWORLD, MCVersion.v1_16_1);
@@ -143,22 +142,22 @@ public class rp_filter extends Thread{
         return new CPos[]{rp_1, rp_2, rp_3, rp_4};
     }
 
-    // ç­›ç®±å­
+    // É¸Ïä×Ó
     public boolean loot_chest(long seed, CPos rp_chest, String target, int num) {
         if(debugging){System.out.println("\nlooting chest");}
         if(debugging){System.out.println("rp_position"+rp_chest.toBlockPos());}
 
-        // åŠ è½½ç®±å­
+        // ¼ÓÔØÏä×Ó
         rand.setDecoratorSeed(seed, rp_chest.getX() * 16, rp_chest.getZ() * 16, 40005, MCVersion.v1_16_1);
         LootContext a1 = new LootContext(rand.nextLong());
 
-        // å¾—åˆ°æˆ˜åˆ©å“
-        List<ItemStack> ItemList = MCLootTables.RUINED_PORTAL_CHEST.generate(a1);
+        // µÃµ½Õ½ÀûÆ·
+        List<ItemStack> ItemList = MCLootTables.RUINED_PORTAL_CHEST.get().generate(a1);
         boolean is_looted = false;
         for (ItemStack itemStack : ItemList) {
-            if(debugging){System.out.println(itemStack.getCount() + " " + itemStack.getItem().getName());}  // è¾“å‡ºç®±å­
-            if(itemStack.getItem().getName().equals(target)){   // å¦‚æœæœ‰
-                if(itemStack.getCount()>=num){      // å¦‚æœå¤Ÿ
+            if(debugging){System.out.println(itemStack.getCount() + " " + itemStack.getItem().getName());}  // Êä³öÏä×Ó
+            if(itemStack.getItem().getName().equals(target)){   // Èç¹ûÓĞ
+                if(itemStack.getCount()>=num){      // Èç¹û¹»
                     is_looted = true;
                 }
             }
@@ -169,28 +168,28 @@ public class rp_filter extends Thread{
     }
 
     public CPos loot_chest_list(long seed, CPos[] rp_list, String target, int num) {
-        int times = 0;  // å¾ªç¯å˜é‡
+        int times = 0;  // Ñ­»·±äÁ¿
         for(CPos rp_chest : rp_list) {
             times ++;
             if(debugging){System.out.println("\nlooting rp_"+times);}
             if(debugging){System.out.println("looting chest");}
             if(debugging){System.out.println("rp_position"+rp_chest.toBlockPos());}
 
-            // åŠ è½½ç®±å­
+            // ¼ÓÔØÏä×Ó
             rand.setDecoratorSeed(seed, rp_chest.getX() * 16, rp_chest.getZ() * 16, 40005, MCVersion.v1_16_1);
             LootContext a1 = new LootContext(rand.nextLong());
 
-            // å¾—åˆ°æˆ˜åˆ©å“
-            List<ItemStack> ItemList = MCLootTables.RUINED_PORTAL_CHEST.generate(a1);
+            // µÃµ½Õ½ÀûÆ·
+            List<ItemStack> ItemList = MCLootTables.RUINED_PORTAL_CHEST.get().generate(a1);
             for (ItemStack itemStack : ItemList) {
                 if(debugging){System.out.println(itemStack.getCount() + " " + itemStack.getItem().getName());}
-                if(itemStack.getItem().getName().equals(target)){   // å¦‚æœæœ‰
-                    if(itemStack.getCount()>=num){      // å¦‚æœå¤Ÿ
-                        return rp_chest;    // å°±è¿”å›åºŸé—¨ä½ç½®
+                if(itemStack.getItem().getName().equals(target)){   // Èç¹ûÓĞ
+                    if(itemStack.getCount()>=num){      // Èç¹û¹»
+                        return rp_chest;    // ¾Í·µ»Ø·ÏÃÅÎ»ÖÃ
                     }
                 }
             }
         }
-        return new CPos(Integer.MAX_VALUE, Integer.MAX_VALUE);  // å¦åˆ™è¿”å›ä¸€ä¸ªç‰¹åˆ«å¤§å¤§å¤§çš„å€¼
+        return new CPos(Integer.MAX_VALUE, Integer.MAX_VALUE);  // ·ñÔò·µ»ØÒ»¸öÌØ±ğ´ó´ó´óµÄÖµ
     }
 }
