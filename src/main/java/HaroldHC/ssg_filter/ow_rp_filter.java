@@ -58,7 +58,7 @@ public class ow_rp_filter {
                 in_biome = true;
             }
         }
-        if(closest_dist<=120 && in_biome){
+        if(closest_dist<=80 && in_biome){
             return closest_rp;
         }else {
             return new CPos(256, 256);
@@ -93,10 +93,34 @@ public class ow_rp_filter {
                 looted_count ++;
             }
         }
-        if(looted_count>=4){
+        if(looted_count>=5){
             is_looted = true;
         }
         if(debugging){System.out.println("looting result: "+is_looted);}
+        return is_looted;
+    }
+    // 筛箱子
+    public boolean loot_chest(long seed, ChunkRand rand, CPos rp_chest, String target, int num) {
+        if(debugging){System.out.println("\nlooting chest");}
+        if(debugging){System.out.println("rp_position"+rp_chest.toBlockPos());}
+
+        // 加载箱子
+        rand.setDecoratorSeed(seed, rp_chest.getX() * 16, rp_chest.getZ() * 16, 40005, MCVersion.v1_16_1);
+        LootContext a1 = new LootContext(rand.nextLong());
+
+        // 得到战利品
+        List<ItemStack> ItemList = MCLootTables.RUINED_PORTAL_CHEST.get().generate(a1);
+        boolean is_looted = false;
+        for (ItemStack itemStack : ItemList) {
+            if(debugging){System.out.println(itemStack.getCount() + " " + itemStack.getItem().getName());}  // 输出箱子
+            if(itemStack.getItem().getName().equals(target)){   // 如果有
+                if(itemStack.getCount()>=num){      // 如果够
+                    is_looted = true;
+                }
+            }
+        }
+        if(debugging){System.out.println("looting result: "+is_looted);}
+
         return is_looted;
     }
 
