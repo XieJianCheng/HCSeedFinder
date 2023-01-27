@@ -58,7 +58,7 @@ public class ow_rp_filter {
                 in_biome = true;
             }
         }
-        if(closest_dist<=80 && in_biome){
+        if(closest_dist<=150 && in_biome){
             return closest_rp;
         }else {
             return new CPos(256, 256);
