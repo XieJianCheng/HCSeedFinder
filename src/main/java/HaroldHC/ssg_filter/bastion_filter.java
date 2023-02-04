@@ -9,7 +9,7 @@ import com.seedfinding.mcfeature.structure.BastionRemnant;
 
 public class bastion_filter {
     public boolean is_in_area(long seed, ChunkRand rand, int sh_x, int sh_z) {
-        BastionRemnant br = new BastionRemnant(MCVersion.v1_16_1);
+        BastionRemnant br = new BastionRemnant(MCVersion.v1_16_5);
 
         int region_x = sh_x>0?0:-1;
         int region_z = sh_z>0?0:-1;
@@ -28,8 +28,8 @@ public class bastion_filter {
         return in_area;
     }
 
-    public boolean check_biome(long seed, ChunkRand rand, int sh_x, int sh_z){
-        NetherBiomeSource nbs = new NetherBiomeSource(MCVersion.v1_16_1, seed);
+    public boolean check_biome(long seed, int sh_x, int sh_z){
+        NetherBiomeSource nbs = new NetherBiomeSource(MCVersion.v1_16_5, seed);
         return nbs.getBiome(new BPos(sh_x*2, 32, sh_z*2)).getName().equals("nether_wastes") ||
                 nbs.getBiome(new BPos(sh_x*2, 32, sh_z*2)).getName().equals("warped_forest");
     }

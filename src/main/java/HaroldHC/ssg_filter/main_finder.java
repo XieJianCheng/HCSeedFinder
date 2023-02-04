@@ -11,7 +11,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Objects;
 
 public class main_finder {
     public static long get_int(String str){
@@ -26,6 +25,11 @@ public class main_finder {
     }
 
     public static void main(String[] args) {
+        String version = "v1.2";
+        String update_log = "changed mc version to 1.16.5";
+        System.out.println(version);
+        System.out.println(update_log);
+        System.out.println("\n");
         main_finder finder = new main_finder();
         List<String> text = finder.read_seed_list("D:/12eye_list_1.16.txt");
 
@@ -36,6 +40,7 @@ public class main_finder {
             e.printStackTrace();
         }
 
+        assert option != null;
         finder.main_runner(text, Integer.parseInt(option.get(0)), Integer.parseInt(option.get(1)));
     }
 
@@ -69,29 +74,30 @@ public class main_finder {
 
             CPos rp = orf.get_closest_rp(seed_now, rand);
             if (!(rp.toBlockPos().equals(new BPos(4096, 0, 4096)))) {
+                int obi_num = orf.obi_in_need_y(seed_now, rp);
                 System.out.println("rp found");
-                boolean is_looted_1 = orf.loot_chest(seed_now, rand, rp, "obsidian", 3);
-                boolean is_looted_2 = orf.loot_chest(seed_now, rand, rp, "gold_pickaxe", 1);
-                boolean is_looted_3 = orf.loot_chest(seed_now, rand, rp, "golden_axe", 1);
-                boolean is_looted_4 = orf.loot_chest(seed_now, rand, rp, "flint_and_steel", 1);
-                boolean is_looted_5 = orf.loot_chest(seed_now, rand, rp, "fire_charge", 2);
-                if(is_looted_1 && is_looted_2 && is_looted_3 && (is_looted_4 || is_looted_5)){
-                    System.out.println("ro looted");
-                    boolean res_br = bf.is_in_area(seed_now, rand, sh_x, sh_z);
-                    boolean res_biome = bf.check_biome(seed_now, rand, sh_x, sh_z);
-//                    System.out.println(res_br);
-//                    System.out.println(res_biome);
-                    if(res_br && res_biome){
-                        System.out.println("all is right");
-                        result_seeds.append(seed_now);
-                        result_seeds.append("\n");
+                if(obi_num>=0){
+                    System.out.println("rp fitted");
+                    boolean is_looted_1 = orf.loot_chest(seed_now, rand, rp, "obsidian", obi_num);
+//                boolean is_looted_2 = orf.loot_chest(seed_now, rand, rp, "gold_pickaxe", 1);
+                    boolean is_looted_3 = orf.loot_chest(seed_now, rand, rp, "golden_axe", 1);
+                    boolean is_looted_4 = orf.loot_chest(seed_now, rand, rp, "flint_and_steel", 1);
+                    boolean is_looted_5 = orf.loot_chest(seed_now, rand, rp, "fire_charge", 2);
+                    if(is_looted_1  && is_looted_3 && (is_looted_4 || is_looted_5)){
+                        System.out.println("ro looted");
+                        boolean res_br = bf.is_in_area(seed_now, rand, sh_x, sh_z);
+                        if(res_br){
+                            System.out.println("seed found");
+                            result_seeds.append(seed_now);
+                            result_seeds.append("\n");
+                        }
                     }
                 }
             }
             index_now++;
         }
         try{
-            System.out.println(result_seeds.toString());
+            System.out.println(result_seeds);
             BufferedWriter writer = new BufferedWriter(new FileWriter("D:/bastion_ssg.txt"));
             writer.write(result_seeds.toString());
             writer.close();
